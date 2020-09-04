@@ -2,89 +2,89 @@ const assert = require('assert');
 const { insertText, deleteText, executeCommand, textEditor } = require('../index');
 
 describe("tests the operation of the input command", () => {
-   it("returns correct text when there is no current text", () => {
-       const currentText = "";
-       const newText = "cat";
-       const output = "cat";
-       const result = insertText(currentText, newText);
-       assert.equal(output, result);
-   })
+  it("returns correct text when there is no current text", () => {
+    const currentText = "";
+    const newText = "cat";
+    const output = "cat";
+    const result = insertText(currentText, newText);
+    assert.equal(output, result);
+  })
 
-   it("returns correct text when there is no current text", () => {
-      const currentText = "cat";
-      const newText = "dog";
-      const output = "catdog";
-      const result = insertText(currentText, newText);
-      assert.equal(output, result);
-   })
+  it("returns correct text when there is no current text", () => {
+    const currentText = "cat";
+    const newText = "dog";
+    const output = "catdog";
+    const result = insertText(currentText, newText);
+    assert.equal(output, result);
+  })
 
-   it("executes input command when command is passed in", () => {
+  it("executes input command when command is passed in", () => {
+    const currentText = "cat";
+    const commandArray = ["INSERT", "dog"];
+    const resultText = "catdog";
+    const clipboard = "bird";
+    const currentHistory = ["cat", "catdog"];
+    const output = [resultText, clipboard, currentHistory];
+    const history = ["cat"]
+    const result = executeCommand(commandArray, currentText, clipboard, history)
+    assert.deepEqual(output, result)
+  })
+})
+
+describe("tests the operation of the delete command", () => {
+  it("returns empty string when there is no current text", () => {
+    const currentText = "";
+    const output = "";
+    const result = deleteText(currentText);
+    assert.equal(output, result);
+  })
+
+  it("returns correct text removing last character", () => {
+    const currentText = "catdog";
+    const output = "catdo";
+    const result = deleteText(currentText);
+    assert.equal(output, result);
+  })
+
+  it("executes delete command when command is passed in", () => {
+    const currentText = "catdog";
+    const commandArray = ["DELETE", "catdog"];
+    const clipboard = "bird";
+    const resultText = "catdo";
+    const currentHistory = ["catdog", "catdo"];
+    const output = [resultText, clipboard, currentHistory ];
+    const history = ["catdog"]
+    const result = executeCommand(commandArray, currentText, clipboard, history)
+    assert.deepEqual(output, result)
+  })
+})
+
+describe("tests the operation of the copy command", () => {
+  it("returns correct text and updated clipboard", () => {
+    const currentText = "catdog";
+    const commandArray = ["COPY"];
+    const clipboard = currentText;
+    const resultText = "catdog";
+    const currentHistory = ["catdog"];
+    const output = [resultText, clipboard, currentHistory];
+    const history = ["catdog"];
+    const result = executeCommand(commandArray, currentText, clipboard, history);
+    assert.deepEqual(output, result)
+  })
+})
+
+describe("tests the operation of the paste command", () => {
+  it("returns correct text and  clipboard", () => {
       const currentText = "cat";
-      const commandArray = ["INSERT", "dog"];
-      const resultText = "catdog";
+      const commandArray = ["PASTE"];
+      const resultText = "catbird";
       const clipboard = "bird";
-      const currentHistory = ["cat", "catdog"];
+      const currentHistory = ["cat", "catbird"];
       const output = [resultText, clipboard, currentHistory];
       const history = ["cat"]
       const result = executeCommand(commandArray, currentText, clipboard, history)
       assert.deepEqual(output, result)
-   })
-})
-
-describe("tests the operation of the delete command", () => {
-    it("returns empty string when there is no current text", () => {
-        const currentText = "";
-        const output = "";
-        const result = deleteText(currentText);
-        assert.equal(output, result);
-    })
- 
-    it("returns correct text removing last character", () => {
-       const currentText = "catdog";
-       const output = "catdo";
-       const result = deleteText(currentText);
-       assert.equal(output, result);
-    })
-
-    it("executes delete command when command is passed in", () => {
-        const currentText = "catdog";
-        const commandArray = ["DELETE", "catdog"];
-        const clipboard = "bird";
-        const resultText = "catdo";
-        const currentHistory = ["catdog", "catdo"];
-        const output = [resultText, clipboard, currentHistory ];
-        const history = ["catdog"]
-        const result = executeCommand(commandArray, currentText, clipboard, history)
-        assert.deepEqual(output, result)
-    })
- })
-
- describe("tests the operation of the copy command", () => {
-     it("returns correct text and updated clipboard", () => {
-         const currentText = "catdog";
-         const commandArray = ["COPY"];
-         const clipboard = currentText;
-         const resultText = "catdog";
-         const currentHistory = ["catdog"];
-         const output = [resultText, clipboard, currentHistory];
-         const history = ["catdog"];
-         const result = executeCommand(commandArray, currentText, clipboard, history);
-         assert.deepEqual(output, result)
-     })
- })
-
- describe("tests the operation of the paste command", () => {
-    it("returns correct text and  clipboard", () => {
-        const currentText = "cat";
-        const commandArray = ["PASTE"];
-        const resultText = "catbird";
-        const clipboard = "bird";
-        const currentHistory = ["cat", "catbird"];
-        const output = [resultText, clipboard, currentHistory];
-        const history = ["cat"]
-        const result = executeCommand(commandArray, currentText, clipboard, history)
-        assert.deepEqual(output, result)
-    })
+  })
 })
 
 describe("tests the operation of the text editor", () => {
@@ -153,5 +153,4 @@ describe("tests the operation of the text editor", () => {
         assert.deepEqual(output, result)
     })
 })
-
 
