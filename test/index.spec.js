@@ -75,82 +75,86 @@ describe("tests the operation of the copy command", () => {
 
 describe("tests the operation of the paste command", () => {
   it("returns correct text and  clipboard", () => {
-      const currentText = "cat";
-      const commandArray = ["PASTE"];
-      const resultText = "catbird";
-      const clipboard = "bird";
-      const currentHistory = ["cat", "catbird"];
-      const output = [resultText, clipboard, currentHistory];
-      const history = ["cat"]
-      const result = executeCommand(commandArray, currentText, clipboard, history)
-      assert.deepEqual(output, result)
+    const currentText = "cat";
+    const commandArray = ["PASTE"];
+    const resultText = "catbird";
+    const clipboard = "bird";
+    const currentHistory = ["cat", "catbird"];
+    const output = [resultText, clipboard, currentHistory];
+    const history = ["cat"]
+    const result = executeCommand(commandArray, currentText, clipboard, history)
+    assert.deepEqual(output, result)
   })
 })
 
 describe("tests the operation of the text editor", () => {
-    it("returns correct history for the list of inserts and deletes", () => {
-        const commands = 
-           [ ["INSERT", "cat"],
-             ["INSERT", "dog"], 
-             ["DELETE"] ]
-        const text = "catdo";
-        const history = ["cat", "catdog", "catdo"];
-        const output = [ text, history ];
-        const result = textEditor(commands);
-        assert.deepEqual(output, result)
-    })
+  it("returns correct history for the list of inserts and deletes", () => {
+    const commands = [
+      ["INSERT", "cat"],
+      ["INSERT", "dog"],
+      ["DELETE"]
+    ]
+    const text = "catdo";
+    const history = ["cat", "catdog", "catdo"];
+    const output = [ text, history ];
+    const result = textEditor(commands);
+    assert.deepEqual(output, result)
+  })
 
-    it("returns correct history for the list of copies and pastes", () => {
-        const commands = 
-           [ ["INSERT", "cat"],
-             ["COPY"], 
-             ["DELETE"],
-             ["PASTE"] ]
-        const text = "cacat";
-        const history = ["cat", "ca", "cacat"];
-        const output = [ text, history ];
-        const result = textEditor(commands);
-        assert.deepEqual(output, result)
-    })
+  it("returns correct history for the list of copies and pastes", () => {
+    const commands = [
+      ["INSERT", "cat"],
+      ["COPY"],
+      ["DELETE"],
+      ["PASTE"]
+    ]
+    const text = "cacat";
+    const history = ["cat", "ca", "cacat"];
+    const output = [ text, history ];
+    const result = textEditor(commands);
+    assert.deepEqual(output, result)
+  })
 
-    it("when the undo command is called, the previous command is reversed", () => {
-        const commands = 
-           [ ["INSERT", "cat"],
-             ["COPY"], 
-             ["DELETE"],
-             ["PASTE"],
-             ["UNDO"] ]
-        const text = "ca";
-        const history = ["cat", "ca"];
-        const output = [ text, history ];
-        const result = textEditor(commands);
-        assert.deepEqual(output, result)
-    })
+  it("when the undo command is called, the previous command is reversed", () => {
+    const commands = [
+      ["INSERT", "cat"],
+      ["COPY"],
+      ["DELETE"],
+      ["PASTE"],
+      ["UNDO"]
+    ]
+    const text = "ca";
+    const history = ["cat", "ca"];
+    const output = [ text, history ];
+    const result = textEditor(commands);
+    assert.deepEqual(output, result)
+  })
 
-    it("when undo is called after copy, the command before copy is reversed", () => {
-        const commands = 
-           [ ["INSERT", "cat"], 
-             ["COPY"],
-             ["UNDO"] ]
-        const text = "";
-        const history = [];
-        const output = [ text, history ];
-        const result = textEditor(commands);
-        assert.deepEqual(output, result)
-    })
+  it("when undo is called after copy, the command before copy is reversed", () => {
+    const commands = [
+      ["INSERT", "cat"],
+      ["COPY"],
+      ["UNDO"]
+    ]
+    const text = "";
+    const history = [];
+    const output = [ text, history ];
+    const result = textEditor(commands);
+    assert.deepEqual(output, result)
+  })
 
-    it("when undo is called twice, the previous two commands are reversed", () => {
-        const commands = 
-           [ ["INSERT", "cat"],
-             ["DELETE"], 
-             ["COPY"],
-             ["UNDO"],
-             ["UNDO"] ]
-        const text = "";
-        const history = [];
-        const output = [ text, history ];
-        const result = textEditor(commands);
-        assert.deepEqual(output, result)
-    })
+  it("when undo is called twice, the previous two commands are reversed", () => {
+    const commands = [
+      ["INSERT", "cat"],
+      ["DELETE"],
+      ["COPY"],
+      ["UNDO"],
+      ["UNDO"]
+    ]
+    const text = "";
+    const history = [];
+    const output = [ text, history ];
+    const result = textEditor(commands);
+    assert.deepEqual(output, result)
+  })
 })
-
