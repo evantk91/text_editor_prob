@@ -25,55 +25,54 @@ previous command that is not copy.
 */
 
 function insertText(currentText, newText) {
-   return currentText + newText 
+  return currentText + newText
 }
 
 function deleteText(currentText) {
-   return currentText.slice(0, currentText.length - 1) 
+  return currentText.slice(0, currentText.length - 1)
 }
 
 function executeCommand(commandArray, currentText, clipboard, history) {
-   let command = commandArray[0];
-   let newText = "";
+  let command = commandArray[0];
+  let newText = "";
      
-   switch(command) {
-      case 'INSERT':
-        newText = insertText(currentText, commandArray[1]);
-        history.push(newText);
-        return [newText, clipboard, history];
-      case 'DELETE':
-        newText = deleteText(currentText, commandArray[1]);
-        history.push(newText);  
-        return [newText, clipboard, history];
-      case 'COPY':
-        clipboard = currentText;
-        return [currentText, clipboard, history];
-      case 'PASTE':
-        newText = currentText + clipboard;
-        history.push(newText);             
-        return [currentText + clipboard, clipboard, history];
-      case 'UNDO':
-        history.pop();
+  switch(command) {
+    case 'INSERT':
+      newText = insertText(currentText, commandArray[1]);
+      history.push(newText);
+      return [newText, clipboard, history];
+    case 'DELETE':
+      newText = deleteText(currentText, commandArray[1]);
+      history.push(newText);
+      return [newText, clipboard, history];
+    case 'COPY':
+      clipboard = currentText;
+      return [currentText, clipboard, history];
+    case 'PASTE':
+      newText = currentText + clipboard;
+      history.push(newText);
+      return [currentText + clipboard, clipboard, history];
+    case 'UNDO':
+      history.pop();
 
-        if (history.length !== 0) {
-            newText = history[history.length - 1]
-        };
-
-        return [newText, clipboard, history];
-      default:
-          console.log('NO COMMAND FOUND');
-          return currentText; 
-   }
+      if (history.length !== 0) {
+        newText = history[history.length - 1]
+      }
+      return [newText, clipboard, history];
+    default:
+      console.log('NO COMMAND FOUND');
+      return currentText;
+  }
 }
 
 function textEditor(commands) {
-   let text = "";
-   let clipboard = "";
-   let history = [];
+  let text = "";
+  let clipboard = "";
+  let history = [];
 
-   commands.map(command => {
-      [text, clipboard, history] = executeCommand(command, text, clipboard, history)
-   })
+  commands.map(command => {
+    [text, clipboard, history] = executeCommand(command, text, clipboard, history)
+  })
 
-   return [text, history]
-} 
+  return [text, history]
+}
