@@ -1,23 +1,47 @@
 const assert = require('assert');
 const { insertText, deleteText, executeCommand, textEditor } = require('../index');
 
+describe("insertText", () => {
+  describe("when current text is empty", () => {
+    it("returns the new text", () => {
+      const currentText = "";
+      const newText = "cat";
+      const result = insertText(currentText, newText);
+      assert.equal(result, newText);
+    })
+  })
+
+  describe("when current text exists", () => {
+    it("appends the new text to the existing current text", () => {
+      const currentText = "cat";
+      const newText = "dog";
+      const expectedResult = currentText + newText;
+      const result = insertText(currentText, newText);
+    assert.equal(result, expectedResult);
+    })
+  })
+})
+
+describe("deleteText", () => {
+  describe("when current text is empty", () => {
+    it("returns an empty string", () => {
+      const currentText = "";
+      const result = deleteText(currentText);
+      assert.equal(result, "");
+    })
+  })
+
+  describe("when current text exists", () => {
+    it("returns current text removing last character", () => {
+      const currentText = "catdog";
+      const expectedResult = "catdo";
+      const result = deleteText(currentText);
+      assert.equal(result, expectedResult);
+    })
+  })
+})
+
 describe("tests the operation of the input command", () => {
-  it("returns correct text when there is no current text", () => {
-    const currentText = "";
-    const newText = "cat";
-    const output = "cat";
-    const result = insertText(currentText, newText);
-    assert.equal(output, result);
-  })
-
-  it("returns correct text when there is no current text", () => {
-    const currentText = "cat";
-    const newText = "dog";
-    const output = "catdog";
-    const result = insertText(currentText, newText);
-    assert.equal(output, result);
-  })
-
   it("executes input command when command is passed in", () => {
     const currentText = "cat";
     const commandArray = ["INSERT", "dog"];
@@ -32,20 +56,6 @@ describe("tests the operation of the input command", () => {
 })
 
 describe("tests the operation of the delete command", () => {
-  it("returns empty string when there is no current text", () => {
-    const currentText = "";
-    const output = "";
-    const result = deleteText(currentText);
-    assert.equal(output, result);
-  })
-
-  it("returns correct text removing last character", () => {
-    const currentText = "catdog";
-    const output = "catdo";
-    const result = deleteText(currentText);
-    assert.equal(output, result);
-  })
-
   it("executes delete command when command is passed in", () => {
     const currentText = "catdog";
     const commandArray = ["DELETE", "catdog"];
